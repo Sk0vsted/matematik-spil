@@ -1,0 +1,46 @@
+nav {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 15em 0 15em;
+}
+
+nav a {
+  text-decoration: none;
+  font-family: 'Roboto', sans-serif;
+  color: black;
+}
+
+.title {
+  font-size: large;
+  font-weight: 600;
+  transition: ease-in-out;
+}
+
+.title:hover {
+  animation: hoverScale 0.5s;
+}
+
+@keyframes hoverScale {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+li {
+  list-style-type: none;
+}
+
+.nav-links {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.link {
+  padding: 0 2em;
+}
