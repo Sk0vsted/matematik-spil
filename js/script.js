@@ -1,245 +1,94 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const operators = ["+", "-", "*", "/"];
-  const easyOperators = ["+", "-"];
-  let svar = 0;
+document.addEventListener('DOMContentLoaded', function () {
+  const operators = ['+', '-', '*', '/'];
+  const easyOperators = ['+', '-'];
+  let correctAnswer = 0;
+  let currentOperator = '';
 
-  // Generér let opgave
-  function generateEasyProblem() {
-    let num1 = Math.floor(Math.random() * 10);
-    let num2 = Math.floor(Math.random() * 10);
-    let operator =
-      easyOperators[Math.floor(Math.random() * easyOperators.length)];
+  // Start spil knap
+  let start = document.querySelector('.start-btn');
+  let game = document.querySelector('.game');
+
+  start.addEventListener('click', function () {
+    start.style.display = 'none';
+    game.style.display = 'flex';
+  });
+
+  // Generer opgave baseret på sværhedsgrad
+  function generateProblem() {
+    const problemType = document.getElementById('problemType').value; // Hent sværhedsgraden
+    let numRange = problemType === 'easy' ? 10 : 100; // Sæt talområdet via ternary
+    let ops = problemType === 'easy' ? easyOperators : operators; // Vælg operatorer
+    let num1 = Math.floor(Math.random() * numRange);
+    let num2 = Math.floor(Math.random() * numRange);
+    let operator = ops[Math.floor(Math.random() * ops.length)];
     let problem = `${num1} ${operator} ${num2}`;
-    svar = evaluateExpression(problem);
+    currentOperator = operator; // Gem den aktuelle operator
+    correctAnswer = evaluateExpression(problem); // Beregn det korrekte svar
     return problem;
   }
 
-  // Generér mellem opgave
-  function generateMediumProblem() {
-    let num1 = Math.floor(Math.random() * 50);
-    let num2 = Math.floor(Math.random() * 50);
-    let operator =
-      easyOperators[Math.floor(Math.random() * easyOperators.length)];
-    let problem = `${num1} ${operator} ${num2}`;
-    svar = evaluateExpression(problem);
-    return problem;
-  }
-
-  // Generér kompliceret opgave
-  function generateComplicatedProblem() {
-    let num1 = Math.floor(Math.random() * 100);
-    let num2 = Math.floor(Math.random() * 100);
-    let operator = operators[Math.floor(Math.random() * operators.length)];
-    let problem = `${num1} ${operator} ${num2}`;
-    svar = evaluateExpression(problem);
-    return problem;
-  }
-
-  // Generér svær opgave
-  function generateHardProblem() {
-    let num1 = Math.floor(Math.random() * 1000);
-    let num2 = Math.floor(Math.random() * 1000);
-    let operator = operators[Math.floor(Math.random() * operators.length)];
-    let problem = `${num1} ${operator} ${num2}`;
-    svar = evaluateExpression(problem);
-    return problem;
-  }
-
-  // Funktion til at indsætte én parentes om multiplikationer eller divisioner
-  function insertParenteser(problem, operators) {
-    const mulOrDivOperators = operators.filter(
-      (op) => op === "*" || op === "/"
-    );
-
-    // Tjek at alle numre og operatører er gyldige, undgå tomme felter
-    if (
-      !problem.includes(undefined) &&
-      !problem.includes("") &&
-      !operators.includes("")
-    ) {
-      // Hvis der er mindst 1 gang eller division, sæt én korrekt placeret parentes
-      if (mulOrDivOperators.length > 0) {
-        const randomChoice =
-          mulOrDivOperators[
-            Math.floor(Math.random() * mulOrDivOperators.length)
-          ];
-
-        // Sæt korrekt placerede parenteser rundt om én operation
-        if (operators[0] === randomChoice) {
-          problem = `(${problem[0]} ${operators[0]} ${problem[1]}) ${operators[1]} ${problem[2]}`;
-        } else if (operators[1] === randomChoice && operators.length > 1) {
-          problem = `${problem[0]} ${operators[0]} (${problem[1]} ${operators[1]} ${problem[2]})`;
-        } else if (operators[2] === randomChoice && operators.length > 2) {
-          problem = `${problem[0]} ${operators[0]} ${problem[1]} ${operators[1]} (${problem[2]} ${operators[2]} ${problem[3]})`;
-        }
-      } else {
-        // Byg udtrykket uden parenteser, hvis der ikke er nogen gange eller divisioner
-        problem = problem
-          .map((num, index) => `${num} ${operators[index] || ""}`)
-          .join(" ")
-          .trim();
-      }
-    } else {
-      // Hvis et problem er tomt eller mangler, returner en fejl
-      console.error("Invalid problem or operator detected.");
-      return "Error: Invalid Problem";
-    }
-
-    return problem;
-  }
-
-  // Generér meget svær opgave
-  function generateVeryHardProblem() {
-    let num1 = Math.floor(Math.random() * 3000);
-    let num2 = Math.floor(Math.random() * 3000);
-    let num3 = Math.floor(Math.random() * 3000);
-    let operator = operators[Math.floor(Math.random() * operators.length)];
-    let operator2 = operators[Math.floor(Math.random() * operators.length)];
-
-    // Lav et array med numre og operatorer
-    let problem = [num1, num2, num3];
-    let ops = [operator, operator2];
-
-    // Brug funktionen til at indsætte parenteser og bygg en streng til evaluering
-    let problemWithParenteser = insertParenteser(problem, ops);
-
-    svar = evaluateExpression(problemWithParenteser);
-    return problemWithParenteser;
-  }
-
-  // Generér umuligt opgave
-  function generateImpossibleProblem() {
-    let num1 = Math.floor(Math.random() * 10000);
-    let num2 = Math.floor(Math.random() * 10000);
-    let num3 = Math.floor(Math.random() * 10000);
-    let num4 = Math.floor(Math.random() * 10000);
-    let operator = operators[Math.floor(Math.random() * operators.length)];
-    let operator2 = operators[Math.floor(Math.random() * operators.length)];
-    let operator3 = operators[Math.floor(Math.random() * operators.length)];
-
-    // Lav et array med numre og operatorer
-    let problem = [num1, num2, num3, num4];
-    let ops = [operator, operator2, operator3];
-
-    // Brug funktionen til at indsætte parenteser og bygg en streng til evaluering
-    let problemWithParenteser = insertParenteser(problem, ops);
-
-    svar = evaluateExpression(problemWithParenteser);
-    return problemWithParenteser;
-  }
-
-  // Evaluer udtrykket korrekt med parenteser
+  // Funktion til at evaluere et matematisk udtryk
   function evaluateExpression(expression) {
-    try {
-      return Function(`'use strict'; return (${expression})`)();
-    } catch (error) {
-      console.error("Error in evaluation:", error);
-      return "Error";
-    }
+    return Function(`return ${expression}`)(); // Beregn og returner resultatet
   }
 
   // Vis regnestykke
   function visProblem() {
-    let problem = "";
-    let problemType = document.getElementById("problemType").value;
-
-    switch (problemType) {
-      case "easy":
-        problem = generateEasyProblem();
-        break;
-      case "medium":
-        problem = generateMediumProblem();
-        break;
-      case "complicated":
-        problem = generateComplicatedProblem();
-        break;
-      case "very-hard":
-        problem = generateVeryHardProblem();
-        break;
-      case "extreme":
-        problem = generateImpossibleProblem();
-        break;
-      case "hard":
-        problem = generateHardProblem();
-        break;
-      case "impossible":
-        problem = generateImpossibleProblem();
-        break;
-    }
-
-    document.getElementById("problem").textContent = problem;
+    const problem = generateProblem(); // Generer et nyt problem
+    document.getElementById('problem').textContent = problem; // Vis problemet i DOM'en
   }
 
-  // Evaluer brugerens svar
+  // Tjek brugerens svar
   function checkAnswer() {
-    const brugerSvar = parseFloat(document.getElementById("userAnswer").value);
-    const feedback = document.getElementById("feedback");
-    const userAnswerInput = document.getElementById("userAnswer"); // Input feltet
+    let userAnswer = parseFloat(document.getElementById('userAnswer').value);
+    const feedback = document.getElementById('feedback');
+    let scoreElement = document.getElementById('score');
+    let score = parseInt(scoreElement.textContent);
 
-    if (isNaN(brugerSvar)) {
-      feedback.innerHTML = "Please enter a valid number.";
-      feedback.style.color = "red";
+    if (isNaN(userAnswer)) {
+      feedback.textContent = 'Indtast venligst et gyldigt tal.';
+      feedback.style.color = 'red';
       return;
     }
 
-    // Rund både det korrekte svar og brugerens svar til 2 decimaler
-    const roundedBrugerSvar = brugerSvar.toFixed(2);
-    const roundedSvar = parseFloat(svar).toFixed(2);
-
-    // Tjek om brugeren er meget tæt på (+/- 1 tolerance)
-    const tolerance = 1;
-    const difference = Math.abs(brugerSvar - svar);
-
-    if (roundedBrugerSvar === roundedSvar) {
-      feedback.innerHTML = "Correct answer!";
-      feedback.style.color = "#02d302";
-
-      // Ryd inputfeltet, når svaret er tjekket
-      userAnswerInput.value = "";
-
-      visProblem(); // Generer nyt problem
-
-      // Generer et nyt problem efter 10 sekunder og fjern feedback
-      setTimeout(() => {
-        feedback.innerHTML = ""; // Fjern feedback
-      }, 10000); // 10 sekunder
-    } else if (difference <= tolerance) {
-      // Hvis svaret er tæt på det rigtige inden for tolerance
-      feedback.textContent =
-        "You're very close! Have you checked if the decimals are correct, or needed at all?";
-      feedback.style.color = "orange"; // Brug en anden farve for "tæt på"-beskeden
-    } else {
-      // Hvis svaret er langt fra det rigtige, brug de normale feedbacks
-      if (roundedSvar > roundedBrugerSvar) {
-        feedback.textContent = `Unfortunately, your answer is incorrect. The answer is higher than ${roundedBrugerSvar}.`;
-      } else {
-        feedback.textContent = `Unfortunately, your answer is incorrect. The answer is lower than ${roundedBrugerSvar}.`;
-      }
-      feedback.style.color = "red";
+    // Håndter division med afrunding til 2 decimaler
+    if (currentOperator === '/') {
+      userAnswer = parseFloat(userAnswer.toFixed(2));
+      correctAnswer = parseFloat(correctAnswer.toFixed(2));
     }
 
-    // Ryd inputfeltet, selvom svaret er forkert eller tæt på
-    userAnswerInput.value = "";
+    let difference = Math.abs(userAnswer - correctAnswer); // Beregn forskellen
+
+    // Giv feedback baseret på hvor tæt brugerens svar er på det korrekte svar
+    if (difference <= 0.01) {
+      feedback.textContent = `Fantastisk! Du ramte præcist det rigtige svar, som var ${correctAnswer}!`;
+      feedback.style.color = 'green';
+      score += 1; // Øg scoren med 1
+      visProblem(); // Generer et nyt regnestykke
+    } else if (difference <= 2) {
+      feedback.textContent = `Meget tæt på! Du gættede ${userAnswer}, som er næsten korrekt. Prøv igen.`;
+      feedback.style.color = 'orange';
+    } else if (difference <= 5) {
+      feedback.textContent = `Du er ikke langt væk. Du gættede ${userAnswer}, som kun er en smule fra. Det rigtige svar er tættere på, end du tror!`;
+      feedback.style.color = 'orange';
+    } else if (difference <= 10) {
+      feedback.textContent = `Hmm... Du gættede ${userAnswer}, som er et stykke væk. Overvej at regne det igennem igen.`;
+      feedback.style.color = 'red';
+      score -= 1; // Reducer scoren med 1
+    } else {
+      feedback.textContent = `Dit svar er desværre langt fra det rigtige. Du skal regne det igennem igen, eller generere en ny, hvis du synes det er for svært.`;
+      feedback.style.color = 'red';
+      score -= 1; // Reducer scoren med 1
+    }
+
+    scoreElement.textContent = score; // Opdater scoren i DOM'en
+    document.getElementById('userAnswer').value = ''; // Ryd inputfeltet
   }
 
-  // Lyt efter ENTER-tasten for at tjekke svaret
-  document
-    .getElementById("userAnswer")
-    .addEventListener("keydown", function (event) {
-      if (event.key === "Enter") {
-        event.preventDefault(); // Forhindr standard "form submit"-adfærd
-        checkAnswer(); // Tjek svaret, når ENTER trykkes
-      }
-    });
+  // Event listeners
+  document.getElementById('checkAnswer').addEventListener('click', checkAnswer);
+  document.getElementById('newProblem').addEventListener('click', visProblem);
+  document.getElementById('problemType').addEventListener('change', visProblem);
 
-  // Kald visProblem() ved siden indlæsning og sværhedsgrad ændring
-  visProblem();
-
-  document.getElementById("problemType").addEventListener("change", visProblem);
-
-  // Lyt til knappen for at tjekke svaret
-  document.getElementById("checkAnswer").addEventListener("click", checkAnswer);
-
-  // Lyt til knappen for at generere et nyt problem
-  document.getElementById("newProblem").addEventListener("click", visProblem);
+  visProblem(); // Generer første regnestykke ved sideindlæsning
 });

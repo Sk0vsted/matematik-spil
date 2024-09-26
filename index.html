@@ -3,49 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="css/style.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-      rel="stylesheet"
-    />
-    <title>Projekt 1 - Matematik Spil</title>
+    <link rel="stylesheet" href="./css/style.css" />
+    <title>Matematik Spil</title>
   </head>
   <body>
-    <header>
-      <nav>
-        <li><a href="/" class="title">Mathmagame</a></li>
-        <div class="nav-links">
-          <li><a href="/" class="link">Home</a></li>
-          <li><a href="/rules.html" class="link">FAQ</a></li>
-        </div>
-      </nav>
-    </header>
     <main>
-      <div class="hero">
-        <h1>Making mathematics</h1>
-        <h1>fun for everyone</h1>
-        <div class="buttons">
-          <button class="start-btn">Start</button>
-          <button class="faq-btn">FAQ</button>
-        </div>
-      </div>
+      <h1>Matematik Spil</h1>
+      <button class="start-btn">Start</button>
       <div class="game">
         <div class="dif-div">
-          <h2>Choose Difficulty</h2>
+          <h2>Vælg Sværhedsgrad</h2>
           <select id="problemType" class="styled-select">
-            <option value="easy">Easy</option>
-            <option value="medium">Medium</option>
-            <option value="complicated">Complicated</option>
-            <option value="hard">Hard</option>
-            <option value="very-hard">Very Hard</option>
-            <option value="extreme">Extreme</option>
-            <option value="impossible">Impossible</option>
+            <option value="easy">Let</option>
+            <option value="hard">Svær</option>
           </select>
         </div>
         <div class="answer-div">
-          <h1>Calculate the following</h1>
+          <h1>Beregn følgende:</h1>
           <p id="feedback"></p>
           <h3 id="problem">Her kommer dit regnestykke</h3>
           <input
@@ -55,12 +29,19 @@
             class="styled-answer"
           />
           <div class="buttonsGame">
-            <button id="checkAnswer">Check answer</button>
-            <button id="newProblem" class="newProblem">Generate New</button>
+            <button id="checkAnswer">Tjek Svar</button>
+            <button id="newProblem" class="newProblem">Generér nyt spørgsmål</button>
           </div>
+          <div class="score">
+            <h2>Score</h2>
+            <h3 id="score">0</h3>
         </div>
       </div>
+      <div class="textBottom">
+        <p>* I tilfælde af division, er svaret i to decimaler og afrundet.</p>
+        <p>** Eksempelvis: Tilfælde 1.867 er svaret 1.87</p>
+      </div>
     </main>
-    <script src="js/script.js"></script>
+    <script src="./js/script.js"></script>
   </body>
 </html>

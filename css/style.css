@@ -1,7 +1,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   background: radial-gradient(circle at center, #1a1b28, #161616);
   height: 100vh;
   color: #eeeeee;
@@ -17,7 +17,7 @@ nav {
 
 nav a {
   text-decoration: none;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   color: #eeeeee;
 }
 
@@ -62,9 +62,9 @@ main {
 
 main h1 {
   text-align: center;
-  font-size: 5em;
+  font-size: 3em;
   font-weight: 500;
-  margin: 0;
+  margin: 0.5em 0;
 }
 
 .hero {
@@ -86,6 +86,7 @@ main h1 {
   color: #161616;
   border: none;
   transition: 0.2s ease-in-out;
+  font-size: 2em;
 }
 
 .hero button {
@@ -98,6 +99,24 @@ main h1 {
   text-transform: uppercase;
   transition: 0.2s ease-in-out;
   width: 8em;
+}
+
+.score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.textBottom {
+  margin: 1em 2em;
+}
+
+.textBottom p {
+  font-size: 1em;
+  text-align: left;
+  margin: 0.5em 0;
+  font-weight: 600;
+  font-style: italic;
 }
 
 .start-btn:hover {
@@ -113,7 +132,7 @@ main h1 {
 }
 
 .game {
-  display: flex;
+  display: none;
   justify-content: space-evenly;
   border: 3px solid #6d6d6d;
   background-color: #1a1b28;
@@ -162,7 +181,7 @@ h2 {
   border: 1px solid #6d6d6d;
   padding: 0.8em;
   font-size: 1.2em;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   border-radius: 10px;
   width: 100%;
   max-width: 400px;
@@ -184,7 +203,7 @@ h2 {
 
 button {
   padding: 0.8em 2em;
-  background-color: #eeeeee;
+  background-color: #e4951e;
   color: #161616;
   border: none;
   border-radius: 100px;
@@ -196,9 +215,8 @@ button {
 }
 
 button:hover {
-  background-color: #1a1b28;
+  background-color: #9a610c;
   color: #eeeeee;
-  border: 1px solid #eeeeee;
 }
 
 #feedback {
@@ -207,6 +225,7 @@ button:hover {
   margin-top: 0.5em;
   margin-bottom: 0.5em;
   animation: displayInfo 0.5s ease-in-out;
+  text-align: center;
 }
 
 @keyframes displayInfo {
@@ -220,8 +239,12 @@ button:hover {
 
 .buttonsGame {
   display: flex;
-  justify-content: space-evenly;
-  width: 40%;
+  flex-direction: column;
+  width: 50%;
+}
+
+.buttonsGame button {
+  margin: 0 0 1em 0;
 }
 
 .newProblem {
