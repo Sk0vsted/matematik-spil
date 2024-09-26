@@ -4,22 +4,13 @@ document.addEventListener('DOMContentLoaded', function () {
   let correctAnswer = 0;
   let currentOperator = '';
 
-  // Start spil knap
-  let start = document.querySelector('.start-btn');
-  let game = document.querySelector('.game');
-
-  start.addEventListener('click', function () {
-    start.style.display = 'none';
-    game.style.display = 'flex';
-  });
-
   // Generer opgave baseret på sværhedsgrad
   function generateProblem() {
     const problemType = document.getElementById('problemType').value; // Hent sværhedsgraden
     let numRange = problemType === 'easy' ? 10 : 100; // Sæt talområdet via ternary
     let ops = problemType === 'easy' ? easyOperators : operators; // Vælg operatorer
-    let num1 = Math.floor(Math.random() * numRange);
-    let num2 = Math.floor(Math.random() * numRange);
+    let num1 = Math.floor(Math.random() * (numRange + 1));
+    let num2 = Math.floor(Math.random() * (numRange + 1));
     let operator = ops[Math.floor(Math.random() * ops.length)];
     let problem = `${num1} ${operator} ${num2}`;
     currentOperator = operator; // Gem den aktuelle operator
@@ -91,4 +82,13 @@ document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('problemType').addEventListener('change', visProblem);
 
   visProblem(); // Generer første regnestykke ved sideindlæsning
+
+  // Start spil knap
+  let start = document.querySelector('.start-btn');
+  let game = document.querySelector('.game');
+
+  start.addEventListener('click', function () {
+    start.style.display = 'none';
+    game.style.display = 'flex';
+  });
 });
